@@ -1,0 +1,72 @@
+{% include 'commons/header.html' %} {% block body %}
+
+<div class="container">
+  <div class="card mt-5">
+    <div class="card-header">Tracker</div>
+    <div class="card-body">
+      <div class="row">
+        <div class="col-md-3">
+          <a
+            class="btn btn-success btn-sm edit_btn"
+            href="javascript:void(0)"
+            onclick="getTackerData(0)"
+            data-bs-toggle="modal"
+            data-bs-target="#modalTracker"
+            role="button"
+            >Add Tracker</a
+          >
+        </div>
+      </div>
+      {% if trackers|length < 1 %}
+      <p>There are no Trackers.</p>
+      {% else %}
+      <table class="table">
+        <thead>
+          <tr>
+            <th>Id</th>
+            <th>Name</th>
+            <th>Description</th>
+            <th>Type</th>
+            <th>Value</th>
+            <th>Options</th>
+            <th>Create date</th>
+            <th>Add Logs</th>
+            <th></th>
+          </tr>
+        </thead>
+        <tbody>
+          {% for tracker in trackers %}
+          <tr>
+            <td>{{ loop.index }}</td>
+            <td>{{ tracker.name }}</td>
+            <td>{{ tracker.description }}</td>
+            <td>{{ tracker.tracker_type.name }}</td>
+            <td>{{ tracker.tracker_values.name }}</td>
+            <td>{{ tracker.options }}</td>
+            <td>{{ tracker.date_created.date() }}</td>
+            <td><a class="btn btn-secondary btn-sm"
+              href="/trackerlogs/{{tracker.id}}"><i class="fa-solid fa-plus fa-lg"></i></a></td>
+            <td class="text-right">
+              <div class="btn-group">
+                <button class="btn btn-secondary dropdown-toggle" type="button" id="defaultDropdown" data-bs-toggle="dropdown" data-bs-auto-close="true" aria-expanded="false">
+                  Actions
+                </button>
+                <ul class="dropdown-menu" aria-labelledby="defaultDropdown">
+                  <li><a class="dropdown-item"  href="/edittracker/{{tracker.id}}"
+                    onclick="getTackerData({{tracker.id}})"
+                    data-bs-toggle="modal"
+                    data-bs-target="#modalTracker" >edit</a></li>
+                  <li><a class="dropdown-item"  href="/delettracker/{{tracker.id}}">delete</a></li>
+                </ul>
+              </div>
+            </td>
+          </tr>
+          {% endfor %}
+        </tbody>
+      </table>
+      {% endif %}
+    </div>
+  </div>
+</div>
+
+{% endblock body %} {% include 'modals/modalTracker.html' %}

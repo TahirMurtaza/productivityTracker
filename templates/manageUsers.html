@@ -1,0 +1,38 @@
+{% include 'commons/header.html' %} 
+{% block body %}
+<div class="container">
+  <h1 class="my-4">Users</h1>
+  {% if users|length < 1 %}
+  <p>There are no users.</p>
+  {% else %}
+  <table class="table">
+    <thead>
+      <tr>
+        <th>Id</th>
+        <th>username</th>
+        <th>email</th>
+        <th>phone</th>
+        <th>created at</th>
+        <th></th>
+      </tr>
+    </thead>
+    <tbody>
+      {% for user in users %}
+      <tr>
+        <td>{{ user.id }}</td>
+        <td>{{ user.username }}</td>
+        <td>{{ user.email }}</td>
+        <td>{{ user.phone }}</td>
+        <td>{{ user.date_created.date() }}</td>
+     
+        <td class="text-right"><a class="btn btn-info btn-sm edit_btn" href="/edituser/{{user.id}}" onclick="getUserData({{user.id}})" data-bs-toggle="modal" data-bs-target="#editUser" role="button">Edit</a><a class="btn btn-danger btn-sm" href="/deleteuser/{{user.id}}" role="button">Delete</a></td>
+      </tr>
+      {% endfor %}
+    </tbody>
+  </table>
+  {% endif %}
+</div>
+{% endblock body %}
+
+<!-- Modal Edit User -->
+{% include 'modals/modalUser.html' %}

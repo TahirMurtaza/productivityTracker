@@ -1,0 +1,74 @@
+<div
+  class="modal fade"
+  id="modalTrackerLog"
+  tabindex="-1"
+  aria-labelledby="modalTrackerLog"
+  aria-hidden="true"
+>
+  <div class="modal-dialog">
+    <div class="modal-content">
+      <div class="modal-header">
+        <h5 class="modal-title" id="trackerlogs_title">Add Tracker Logs</h5>
+        <button
+          type="button"
+          class="btn-close"
+          data-bs-dismiss="modal"
+          aria-label="Close"
+        ></button>
+      </div>
+      <form action="" method="POST" id="TrackerLogs">
+        <div class="modal-body">
+          <input name="tracker_id" value="{{tracker.id}}" type="hidden" />
+          <div class="mb-3">
+            <label for="description" class="form-label">Notes</label>
+            <textarea
+              type="textarea"
+              class="form-control"
+              name="notes"
+            ></textarea>
+          </div>
+          {% if tracker.tracker_values.value != 2 %}
+          <div class="mb-3">
+            <label for="value" class="form-label">Value</label>
+            <input
+              type="number"
+              class="form-control"
+              name="value"
+              aria-describedby="value"
+            />
+          </div>
+          {% else %}
+
+          <div class="mb-3" >
+            <label for="value" class="form-label"
+              >Select Multiple Choices</label
+            >
+            <select
+              id="mcq_select"
+              class="form-select"
+              name="mcq_value"
+              aria-label="Tracker Name"
+            >
+              {% for opt in tracker.options.split(",") %}
+              <option value="{{loop.index}}">{{opt}}</option>
+              {% endfor %}
+            </select>
+          </div>
+          {% endif %}
+        </div>
+        <div class="modal-footer">
+          <button
+            type="button"
+            class="btn btn-secondary"
+            data-bs-dismiss="modal"
+          >
+            Close
+          </button>
+          <button class="btn btn-primary" id="trackerlogs_btn" type="submit">
+            Add
+          </button>
+        </div>
+      </form>
+    </div>
+  </div>
+</div>

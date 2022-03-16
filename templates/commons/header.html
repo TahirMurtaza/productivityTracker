@@ -1,0 +1,34 @@
+{% extends 'commons/base.html' %} {% block title %} Productivity Tracker {%
+endblock %} {% block body %}
+<nav class="py-2 bg-light border-bottom">
+  <div class="container d-flex flex-wrap">
+    <ul class="nav me-auto">
+      <li class="nav-item">
+        <a
+          href="{{url_for('home')}}"
+          class="nav-link link-dark px-2 active"
+          aria-current="page"
+          >Home</a
+        >
+      </li>
+      <!-- When user is admin show users menu -->
+      {% if current_user.id == 1 %}
+      <li class="nav-item">
+        <a href="{{url_for('users')}}" class="nav-link link-dark px-2">Users</a>
+      </li>
+      {% endif %}
+    </ul>
+    <ul class="nav">
+      <!-- When user is authenticated show logout menu-->
+      {% if current_user.is_authenticated %}
+      <li class="nav-item">
+        <a href="{{url_for('logout')}}" class="nav-link link-dark px-2"
+          >Logout</a
+        >
+      </li>
+      {% endif %}
+    </ul>
+  </div>
+</nav>
+
+{% include 'commons/flashmessage.html'%} {% endblock %}

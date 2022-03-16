@@ -1,0 +1,96 @@
+<div
+  class="modal fade"
+  id="modalTracker"
+  tabindex="-1"
+  aria-labelledby="modalTracker"
+  aria-hidden="true"
+>
+  <div class="modal-dialog">
+    <div class="modal-content">
+      <div class="modal-header">
+        <h5 class="modal-title" id="tracker_title">Add Tracker</h5>
+        <button
+          type="button"
+          class="btn-close"
+          data-bs-dismiss="modal"
+          aria-label="Close"
+        ></button>
+      </div>
+      <form action="" method="POST" id="Tracker">
+        <div class="modal-body">
+          <div class="mb-3">
+            <label for="name" class="form-label">Tracker Name</label>
+            <input
+              type="text"
+              class="form-control"
+              name="name"
+              aria-describedby="Name"
+            />
+          </div>
+          <div class="mb-3">
+            <label class="form-check-label" for="tracker_type"
+              >Tracker Type</label
+            >
+            <select
+              class="form-select"
+              name="tracker_type"
+              aria-label="Tracker Type"
+            >
+              {% for val in (tracker_type) %}
+              <option value="{{val.name}}">{{val.name}}</option>
+              {% endfor %}
+            </select>
+          </div>
+          <div class="mb-3">
+            <label for="description" class="form-label">Description</label>
+            <textarea
+              type="textarea"
+              class="form-control"
+              name="description"
+            ></textarea>
+          </div>
+        
+          <div class="mb-3">
+            <label class="form-check-label" for="tracker_values"
+              >Tracker Values</label
+            >
+            <select
+              class="form-select"
+              name="tracker_value"
+              aria-label="Tracker Values"
+              id="tracker_values"
+              onchange="selectTracker(this);"
+            >
+              {% for val in (tracker_values) %}
+              <option value="{{val.name}}">{{val.name}}</option>
+              {% endfor %}
+            </select>
+          </div>
+          <div class="mb-3" id="options">
+            <label for="name" class="form-label">Options</label>
+            <input
+              type="text"
+              class="form-control"
+              name="options"
+              aria-describedby="options"
+            />
+            <div class="form-text">
+              (comma separated options if tracker type is Multiple choices)
+            </div>
+          </div>
+        </div>
+        <div class="modal-footer">
+          <button
+            type="button"
+            class="btn btn-secondary"
+            data-bs-dismiss="modal"
+          >
+            Close
+          </button>
+          <button class="btn btn-primary" id="tracker_btn" type="submit">Add</button>
+        </div>
+      </form>
+    </div>
+  </div>
+</div>
+

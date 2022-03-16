@@ -1,0 +1,77 @@
+{% include 'commons/header.html' %} {% block body %}
+
+<div class="container">
+  {% if tracker.tracker_logs|length > 0 and tracker.tracker_values.value != 2 %}
+  {% include 'commons/tracker_chart.html' %}
+  {% endif %}
+  <div class="card mt-5">
+    <div class="card-header">{{tracker.name}}</div>
+    <div class="card-body">
+      <div class="row">
+        <div class="col-md-3">
+          <a
+            class="btn btn-success btn-sm edit_btn"
+            href="javascript:void(0)"
+            onclick="getTackerLogsData(0)"
+            data-bs-toggle="modal"
+            data-bs-target="#modalTrackerLog"
+            role="button"
+            >Add Tracker Logs</a
+          >
+        </div>
+      </div>
+      {% if tracker.tracker_logs|length < 1 %}
+      <p>There are no Tracker Logs.</p>
+      {% else %}
+      <table class="table">
+        <thead>
+          <tr>
+            <th>Id</th>
+            <th>Timestamp</th>
+            <th>Notes</th>
+            <th>Value</th>
+            <th></th>
+          </tr>
+        </thead>
+        <tbody>
+          {% for trackerlog in tracker.tracker_logs %}
+          <tr>
+            <td>{{ loop.index }}</td>
+            <td>{{ trackerlog.timestamp.strftime('%Y-%m-%d') }} at {{ trackerlog.timestamp.strftime('%H:%M') }}</td>
+            <td>{{ trackerlog.notes }}</td>
+            <!-- If the tracker value is 2 (Multiple_choices) then we need show comma separated options selected value--->
+            {% if trackerlog.tracker.tracker_values.value == 2 %}
+            <!-- Here we have split the options string and indexed it to the trackerlog selected value-->
+            <td>
+              {{ trackerlog.tracker.options.split(",")[ trackerlog.value |
+              int] }}
+            </td>
+            {% else %}
+            <!--else show numerical value-->
+            <td>{{ trackerlog.value }}</td>
+            {% endif %}
+            <td class="text-right">
+              <div class="btn-group">
+                <button class="btn btn-secondary dropdown-toggle" type="button" id="defaultDropdown" data-bs-toggle="dropdown" data-bs-auto-close="true" aria-expanded="false">
+                  Actions
+                </button>
+                <ul class="dropdown-menu" aria-labelledby="defaultDropdown">
+                  <li><a class="dropdown-item"  href="/edittrackerlog/{{trackerlog.id}}"
+                    onclick="getTackerLogsData({{trackerlog.id}})"
+                    data-bs-toggle="modal"
+                    data-bs-target="#modalTrackerLog">edit</a></li>
+                  <li><a class="dropdown-item" href="/deletetrackerlog/{{trackerlog.id}}">delete</a></li>
+                </ul>
+              </div>
+            </td>
+          </tr>
+          {% endfor %}
+        </tbody>
+      </table>
+      {% endif %}
+    </div>
+  </div>
+ 
+</div>
+
+{% endblock body %} {% include 'modals/modalTrackerLogs.html' %}
