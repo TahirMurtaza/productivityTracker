@@ -50,7 +50,7 @@
               aria-label="Tracker Name"
             >
               {% for opt in tracker.options.split(",") %}
-              <option value="{{loop.index}}">{{opt}}</option>
+              <option value="{{loop.index -1 }}">{{opt}}</option>
               {% endfor %}
             </select>
           </div>

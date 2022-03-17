@@ -46,7 +46,7 @@ def Index():
     return render_template("login.html")
 
 # This route is to register new user
-@app.route('/register', methods=['POST'])
+@app.route('/register', methods=['POST','GET'])
 def register():
     try:
         if request.method == 'POST':
@@ -71,7 +71,7 @@ def register():
     return render_template("register.html")
 
 # This route is for login user
-@app.route('/login', methods=['POST'])
+@app.route('/login', methods=['POST','GET'])
 def login():
     if request.method == 'POST':
         if not request.form['username'] or not request.form['password']:
@@ -266,7 +266,6 @@ def trackerlogs(id):
                     dictlog['timestamp'] = log.timestamp
                     logs.append(dictlog)
             df = pd.DataFrame(logs)
-            
             if not df.empty:
                 # generate chart using logs dataframe
                 fig = generateChart(df)
@@ -334,6 +333,10 @@ def generateChart(df):
     fig.update_layout(updatemenus=[dict(type="dropdown",
                                         direction="down",
                                         buttons = buttons)])
+
+ 
+    import pdb ; pdb.set_trace()
+    fig.show()
     return fig
     
 # This route is for adding Tracker Logs using POST method
@@ -344,7 +347,6 @@ def AddtrackerLogs():
         if request.method == 'POST':
             tracker_id = request.form['tracker_id']
             tracker = Tracker.query.get(tracker_id)
-            
             # if tracker value is multiple choice
             if tracker.tracker_values.value == 2:
                 value = request.form['mcq_value']
@@ -374,7 +376,12 @@ def EditTackerLog(id):
         if request.method == 'POST':
             tracker_logs.tracker_id = request.form['tracker_id']
             tracker_logs.notes = request.form['notes']
-            tracker_logs.value = request.form['value']
+            # if tracker value is multiple choice
+            if tracker_logs.tracker.tracker_values.value == 2:
+                tracker_logs.value = request.form['mcq_value']
+            else:
+                tracker_logs.value = request.form['value']
+   
             # Update user in database
             db.session.commit()
             flash('Tracker Logs Updated Successfully!', 'success')
@@ -408,4 +415,4 @@ def deleteTrackerLog(id):
 
 
 if __name__ == "__main__":
-    app.run(debug=True)
+    app.run(debug=True, port='3000', host='0.0.0.0')
